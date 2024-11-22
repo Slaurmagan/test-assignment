@@ -1,0 +1,77 @@
+services:
+  redis:
+    image: "redis:6.2.3-alpine"
+    command: redis-server
+    restart: unless-stopped
+    networks:
+      - default
+
+  postgres:
+    image: "postgres:13"
+    restart: always
+    environment:
+      # note: this password is set only once when DB container is started first time
+      POSTGRES_PASSWORD: postgres
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_HOST_AUTH_METHOD: trust
+    volumes:
+      - ./tmp/db_data_main:/var/lib/postgresql/data
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: test-assignment:latest
+    command: bash -c "bin/rails server -b 0.0.0.0 -p 9564"
+    ports:
+      - '9565:9564'
+    volumes:
+      - ./:/app
+      - bundle:/bundle
+    tmpfs:
+      - /tmp/pids/
+    stdin_open: true
+    tty: true
+    environment:
+      - "RAILS_ENV=development"
+    depends_on:
+      - redis
+      - postgres
+    links:
+      - redis
+    networks:
+      - default
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: test-assignment:latest
+    command: bash -c "foreman start -f Procfile.dev"
+    volumes:
+      - ./:/app
+      - bundle:/bundle
+    stdin_open: true
+    tty: true
+    depends_on:
+      - app
+    links:
+      - redis
+    networks:
+      - default
+
+  sidekiq:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    image: test-assignment:latest
+    command: bundle exec sidekiq
+    volumes:
+      - ./:/app
+      - bundle:/bundle
+    stdin_open: true
+    tty: true
+    depends_on:
+      - app
+volumes:
+  bundle:

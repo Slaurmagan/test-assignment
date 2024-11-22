@@ -1,0 +1,23 @@
+<main class="container mx-auto mt-28 px-5 flex flex-col">
+  <%= render 'errors', errors: [] %>
+  <%= render 'form', payment: @payment %>
+
+  <div class="container mx-auto p-8">
+    <h1 class="text-xl font-bold mb-4">Payments List</h1>
+    <table class="min-w-full border-collapse border border-gray-300">
+      <thead>
+      <tr class="bg-gray-100">
+        <th class="border border-gray-300 px-4 py-2 text-left">Sender ID</th>
+        <th class="border border-gray-300 px-4 py-2 text-left">Receiver ID</th>
+        <th class="border border-gray-300 px-4 py-2 text-left">Status</th>
+        <th class="border border-gray-300 px-4 py-2 text-left">Payment Type</th>
+        <th class="border border-gray-300 px-4 py-2 text-left">Amount</th>
+        <th class="border border-gray-300 px-4 py-2 text-left">Execution Time</th>
+      </tr>
+      </thead>
+      <tbody id="payments">
+        <%= render @payments %>
+      </tbody>
+    </table>
+  </div>
+</main>

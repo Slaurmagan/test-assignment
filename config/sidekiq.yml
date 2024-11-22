@@ -1,0 +1,13 @@
+:verbose: true
+:concurrency: 25
+
+:queues:
+  - default
+  - scheduled_payments_queue
+
+:scheduler:
+  :schedule:
+    scheduled_payments:
+      every: ['3s']
+      class: ScheduledPaymentsWorker
+      queue: scheduled_payments_queue

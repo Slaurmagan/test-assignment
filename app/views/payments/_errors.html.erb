@@ -1,0 +1,12 @@
+<%= turbo_frame_tag 'errors' do %>
+  <% if errors.any? %>
+    <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4" role="alert">
+      <strong class="font-bold">There were some errors:</strong>
+      <ul class="mt-2">
+        <% errors.full_messages.each do |message| %>
+          <li class="text-sm"><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+<% end %>

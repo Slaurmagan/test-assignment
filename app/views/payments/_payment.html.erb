@@ -1,0 +1,12 @@
+<tr class="hover:bg-gray-50">
+  <td class="border border-gray-300 px-4 py-2"><%= payment.sender_id %></td>
+  <td class="border border-gray-300 px-4 py-2"><%= payment.receiver_id %></td>
+  <td class="border border-gray-300 px-4 py-2"><%= payment.status %></td>
+  <td class="border border-gray-300 px-4 py-2"><%= payment.payment_type %></td>
+  <td class="border border-gray-300 px-4 py-2"><%= payment.amount %> <%= payment.currency.name %></td>
+  <td class="border border-gray-300 px-4 py-2">
+    <% if payment.execute_at %>
+      <%= payment.execute_at.strftime('%Y-%m-%d %I:%M %p') %>
+    <% end %>
+  </td>
+</tr>
