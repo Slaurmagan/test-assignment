@@ -35,7 +35,6 @@ class Payment::Create < ApplicationInteraction
     return errors.add(:execute_at, 'cant be set for immediate payment') if payment_type == Payment.payment_types[:immediate] && execute_at.present?
     return errors.add(:execute_at, 'cant be empty') if payment_type == Payment.payment_types[:scheduled] && execute_at.blank?
 
-    binding.pry
     errors.add(:execute_at, 'cant be in past') if payment_type == Payment.payment_types[:scheduled] && execute_at < Time.current
   end
 
